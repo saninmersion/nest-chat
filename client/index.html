@@ -8,26 +8,31 @@
       body {
           font-family: Arial, sans-serif;
       }
+
       #chat {
           max-width: 600px;
           margin: 0 auto;
       }
+
       #messages {
           border: 1px solid #ccc;
           padding: 10px;
           height: 300px;
           overflow-y: scroll;
       }
+
       #message-input {
           display: flex;
           margin-top: 10px;
       }
+
       #message-input input {
           flex: 1;
           padding: 10px;
           border: 1px solid #ccc;
           border-radius: 5px 0 0 5px;
       }
+
       #message-input button {
           padding: 10px;
           border: 1px solid #ccc;
@@ -35,6 +40,19 @@
           background-color: #007bff;
           color: white;
           border-radius: 0 5px 5px 0;
+      }
+      div {
+          margin: 12px 0;
+          font-size: 12px;
+      }
+
+      .join {
+          font-size: 10px;
+          color: gray;
+          text-align: center;
+          background: #cccccc;
+          padding: 2px 4px;
+          border-radius: 12px;
       }
   </style>
 </head>
@@ -55,10 +73,13 @@
   const messages = document.getElementById('messages');
   const messageInput = document.getElementById('message');
   const sendButton = document.getElementById('send-button');
+  let user = null;
 
   socket.on('user-joined', (data) => {
     const messageElement = document.createElement('div');
+    messageElement.className = 'join';
     messageElement.textContent = data.message;
+    user = data.user;
     messages.appendChild(messageElement);
   });
 
@@ -70,7 +91,7 @@
 
   socket.on('reply', (data) => {
     const messageElement = document.createElement('div');
-    messageElement.textContent = data;
+    messageElement.textContent = data.user + ': ' + data.message;
     messages.appendChild(messageElement);
   });
 
